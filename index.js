@@ -24,10 +24,16 @@ global.db = connection;
 
 const client = new Discord.Client();
 
-client.on('ready', evt => {
+var prefixes = {};
+
+client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	client.guilds.forEach(guild => {
-		guildController.checkPrefix(guild.id);
+		guildController.getPrefix(guild.id).then(data => {
+			prefixes[guild.id] = data;
+		}, err => {
+			throw err;
+		});
 	});
 });
 
@@ -36,7 +42,9 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('message', message => {
-	console.log(message);
+	if(message.content.startsWith(prefixes[message.guild.id])){
+		console.log(message.content);
+	}
 })
 
 client.login(auth.token);

@@ -42,8 +42,16 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('message', message => {
-	if(message.content.startsWith(prefixes[message.guild.id])){
-		console.log(message.content);
+	if(message.content.startsWith(prefixes[message.guild.id]) && !message.author.bot){
+		elements = message.content.split(/\s+/).slice(1).map(element => (
+			element.toLowerCase()
+		));
+
+		cmd = elements[0];
+		args = elements.slice(1);
+
+		switch(cmd){
+		}
 	}
 })
 

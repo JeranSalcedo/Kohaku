@@ -1,0 +1,22 @@
+{
+  "name": "kohaku",
+  "version": "1.0.0",
+  "description": "Personal Discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeranSalcedo/Kohaku.git"
+  },
+  "author": "JeranSalcedo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeranSalcedo/Kohaku/issues"
+  },
+  "homepage": "https://github.com/JeranSalcedo/Kohaku#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

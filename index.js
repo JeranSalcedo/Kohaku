@@ -51,18 +51,19 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('message', message => {
-	if(channels[message.guild.id][3] !== undefined && !message.author.bot){
+	if(channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
 		client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
 			.setColor('#0099ff')
-			.setTitle('New Message')
+			.setTitle(`New Message - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
 			.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
 			.setDescription(message.channel)
-			.addField(message.createdAt, message.content)
+			.addField(message.createdAt, message.content.length == 0? '\u200b' : message.content)	
+			.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
 			.setTimestamp()
 		);
 	}
 
-	if(message.content.startsWith(prefixes[message.guild.id]) && !message.author.bot){
+	if(!message.author.bot && message.content.startsWith(prefixes[message.guild.id])){
 		elements = message.content.split(/\s+/).slice(1).map(element => (
 			element.toLowerCase()
 		));

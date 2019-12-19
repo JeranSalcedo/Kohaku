@@ -82,7 +82,7 @@ client.on('guildMemberAdd', member => {
 client.on('guildMemberRemove', member => {
 	if(channels[member.guild.id][3] !== undefined){
 		client.channels.get(channels[member.guild.id][3]).send(new Discord.RichEmbed()
-			.setColor('#00ff7b')
+			.setColor('#272727')
 			.setTitle(`${member.bot? 'Bot' : 'Member'} left the server`)
 			.addField(member.id, member.user.tag)
 			.setImage(member.user.avatarURL)
@@ -121,9 +121,36 @@ client.on('message', message => {
 
 		switch(cmd){
 			case 't':
-				console.log();
+				
 		}
 	}
-})
+});
+
+client.on('messageDelete', message => {
+	if(channels[message.guild.id][3] !== undefined){
+		if(message.channel.id === channels[message.guild.id][3] && message.author.id === client.user.id){
+			// console.log(message.embeds[0].fields);
+			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
+				.setColor('#ff3636')
+				.setTitle(`Log Deleted - ${message.embeds[0].image === null? 'No' : 'Has'} Attachment`)
+				.setAuthor(`${message.embeds[0].author.name}`, message.embeds[0].author.iconURL)
+				.setDescription(message.embeds[0].description)
+				.addField(message.embeds[0].fields[0].name, message.embeds[0].fields[0].value)	
+				.setImage(message.embeds[0].image === null? '' : message.embeds[0].image.url)
+				.setTimestamp()
+			);
+		} else {
+			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
+				.setColor('#ffc35e')
+				.setTitle(`Message Deleted - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
+				.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
+				.setDescription(message.channel)
+				.addField(message.createdAt, message.content.length == 0? '\u200b' : message.content)	
+				.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
+				.setTimestamp()
+			);
+		}
+	}
+});
 
 client.login(auth.token);

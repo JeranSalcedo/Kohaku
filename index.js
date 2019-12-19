@@ -132,7 +132,7 @@ client.on('messageDelete', message => {
 			// console.log(message.embeds[0].fields);
 			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
 				.setColor('#ff3636')
-				.setTitle(`Log Deleted - ${message.embeds[0].image === null? 'No' : 'Has'} Attachment`)
+				.setTitle(`${message.embeds[0].title}`)
 				.setAuthor(`${message.embeds[0].author.name}`, message.embeds[0].author.iconURL)
 				.setDescription(message.embeds[0].description)
 				.addField(message.embeds[0].fields[0].name, message.embeds[0].fields[0].value)	
@@ -141,7 +141,7 @@ client.on('messageDelete', message => {
 			);
 		} else {
 			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
-				.setColor('#ffc35e')
+				.setColor('#ff710c')
 				.setTitle(`Message Deleted - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
 				.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
 				.setDescription(message.channel)
@@ -150,6 +150,20 @@ client.on('messageDelete', message => {
 				.setTimestamp()
 			);
 		}
+	}
+});
+
+client.on('messageUpdate', (oldMessage, newMessage) => {
+	if(channels[oldMessage.guild.id][3] !== undefined && !oldMessage.author.bot){
+		client.channels.get(channels[oldMessage.guild.id][3]).send(new Discord.RichEmbed()
+			.setColor('#ffc35e')
+			.setTitle(`Message Edited - ${oldMessage.attachments.size == 0? 'No' : 'Has'} Attachment`)
+			.setAuthor(`${oldMessage.author.tag} - ${oldMessage.author.id}`, oldMessage.author.avatarURL)
+			.setDescription(oldMessage.channel)
+			.addField(oldMessage.content.length == 0? '\u200b' : oldMessage.content, newMessage.content.length == 0? '\u200b' : newMessage.content)	
+			.setImage(oldMessage.attachments.size == 0? '' : oldMessage.attachments.values().next().value.url)
+			.setTimestamp()
+		);
 	}
 });
 

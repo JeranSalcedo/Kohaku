@@ -47,7 +47,55 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
+	if(channels[member.guild.id][3] !== undefined){
+		client.channels.get(channels[member.guild.id][3]).send(new Discord.RichEmbed()
+			.setColor('#00ff7b')
+			.setTitle(`New ${member.bot? 'Bot' : 'Member'}`)
+			.addField(member.id, member.user.tag)	
+			.setImage(member.user.avatarURL)
+			.setTimestamp()
+		);
+	}
 
+	if(member.bot){
+		guildController.getRole_type(member.guild.id, 1).then(data => {
+			member.addRole(data)
+		}, err => {
+			throw err;
+		});
+	} else {
+		if(channels[member.guild.id][1] !== undefined){
+			client.channels.get(channels[member.guild.id][1])
+				.send(`Welcome to the ORSTED Co. crew server, <@${member.id}>!\nPlease check the rules over at <#${channels[member.guild.id][4]}> and wait for an admin to give you the crew role.`)
+				.then(console.log(`New member: ${member.tag} - ${member.id}`))
+				.catch(console.error);
+		}
+
+		guildController.getRole_type(member.guild.id, 0).then(data => {
+			member.addRole(data)
+		}, err => {
+			throw err;
+		});
+	}
+});
+
+client.on('guildMemberRemove', member => {
+	if(channels[member.guild.id][3] !== undefined){
+		client.channels.get(channels[member.guild.id][3]).send(new Discord.RichEmbed()
+			.setColor('#00ff7b')
+			.setTitle(`${member.bot? 'Bot' : 'Member'} left the server`)
+			.addField(member.id, member.user.tag)
+			.setImage(member.user.avatarURL)
+			.setTimestamp()
+		);
+	}
+
+	if(!member.bot && channels[member.guild.id][1] !== undefined){
+		client.channels.get(channels[member.guild.id][1])
+			.send(`<@${member.id}> has left the server...`)
+			.then(console.log(`Member: ${member.user.tag} - ${member.id} has left the server`))
+			.catch(console.error);
+	}
 });
 
 client.on('message', message => {

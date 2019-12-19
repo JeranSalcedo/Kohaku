@@ -1,7 +1,9 @@
 const Q = require('q');
 const Prefix = require('../models/Prefix');
+const Role = require('../models/Role');
 
 const prefixModel = new Prefix();
+const roleModel = new Role();
 
 class guildController {
 	getPrefix(guildId){
@@ -18,6 +20,23 @@ class guildController {
 				});
 			} else {
 				def.resolve(data[0].prefix);
+			}
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
+
+	getRole_type(guildId, type){
+		const def = Q.defer();
+
+		const request = roleModel.getRole_type(guildId, type);
+		request.then(data => {
+			if(data.length == 0){
+					def.resolve('');
+			} else {
+				def.resolve(data[0].role);
 			}
 		}, err => {
 			def.reject(err);

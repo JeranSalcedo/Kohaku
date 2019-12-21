@@ -99,29 +99,80 @@ client.on('guildMemberRemove', member => {
 });
 
 client.on('message', message => {
-	if(channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
-		client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
-			.setColor('#0099ff')
-			.setTitle(`New Message - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
-			.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
-			.setDescription(message.channel)
-			.addField(message.createdAt, message.content.length == 0? '\u200b' : message.content)	
-			.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
-			.setTimestamp()
-		);
-	}
+	// !k sm 655852590931640330 655881083543355412 test
+	if(message.channel.type === 'dm'){
+		if(!message.author.bot && message.content.startsWith('!k ')){
+			elements = message.content.split(/\s+/).slice(1).map(element => (
+				element.toLowerCase()
+			));
 
-	if(!message.author.bot && message.content.startsWith(prefixes[message.guild.id])){
-		elements = message.content.split(/\s+/).slice(1).map(element => (
-			element.toLowerCase()
-		));
+			cmd = elements[0];
+			args = elements.slice(1);
 
-		cmd = elements[0];
-		args = elements.slice(1);
+			switch(cmd){
+				case 'sm':
+				case 'sendmessage':
+					if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
+						message.channel
+							.send(`Command format is:\n\t!k ${cmd} *<server> <channel> <message>*`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+					} else {
+						client.guilds.get(args[0]).channels.get(args[1])
+							.send(args.slice(2).join(' '))
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
 
-		switch(cmd){
-			case 't':
-				
+						message.channel
+							.send(`Message sent to ${client.guilds.get(args[0]).name}: ${client.guilds.get(args[0]).channels.get(args[1]).name}`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+					}
+			}
+		}
+	} else {
+		if(channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
+			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
+				.setColor('#0099ff')
+				.setTitle(`New Message - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
+				.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
+				.setDescription(message.channel)
+				.addField(message.createdAt, message.content.length == 0? '\u200b' : message.content)	
+				.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
+				.setTimestamp()
+			);
+		}
+
+		if(!message.author.bot && message.content.startsWith(prefixes[message.guild.id])){
+			elements = message.content.split(/\s+/).slice(1).map(element => (
+				element.toLowerCase()
+			));
+
+			cmd = elements[0];
+			args = elements.slice(1);
+
+			switch(cmd){
+				case 'ci':
+				case 'channelid':
+					if(channels[message.guild.id][0] !== undefined){
+						if(args.length < 1 || args[0].replace(/\D/g,'').length < 18){
+							message.channel
+								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel>*`)
+								.then(console.log(`Sent message: ${message.content}`))
+								.catch(console.error);
+						} else {
+							message.channel
+								.send(`Channel id:\n\t${args[0].replace(/\D/g,'')}`)
+								.then(console.log(`Sent message: ${message.content}`))
+								.catch(console.error);
+						}
+					}
+
+					break;
+
+				case 'smc':
+					
+			}
 		}
 	}
 });

@@ -7,7 +7,6 @@ class channelController {
 	getChannels(guildId){
 		const def = Q.defer();
 
-			console.log("CHANNELCONTROLLER OK");
 		const request = channelModel.getChannels(guildId);
 		request.then(data => {
 			def.resolve(data.reduce((obj, item) => (

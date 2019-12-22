@@ -46,7 +46,7 @@ client.on('ready', () => {
 		`;
 
 		console.log("A");
-		db.query(query, [guildId], (err, data) => {
+		db.query(query, ['655852590931640330'], (err, data) => {
 		console.log("B");
 			if(err){
 				throw err;

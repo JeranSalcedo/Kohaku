@@ -42,7 +42,7 @@ client.on('ready', () => {
 				num
 			FROM channel_preference
 			WHERE
-				server = 655852590931640330
+				server = '655852590931640330'
 		`;
 
 		db.query(query, (err, data) => {

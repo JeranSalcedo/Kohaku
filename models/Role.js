@@ -8,15 +8,15 @@ class Role {
 				role
 			FROM role
 			WHERE
-				server = ? AND
-				type = ?
+				server = '${guildId}' AND
+				type = ${type}
 		`;
 
-		db.query(query, [guildId, type], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(JSON.parse(JSON.stringify(data)));
+				def.resolve(data.rows);
 			}
 		});
 

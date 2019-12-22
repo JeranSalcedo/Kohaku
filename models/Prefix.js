@@ -8,15 +8,15 @@ class Prefix {
 				prefix
 			FROM prefix
 			WHERE
-				server = ? AND
-				maid = ?
+				server = '${guildId}' AND
+				maid = '0'
 		`;
 
-		db.query(query, [guildId, 0], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(JSON.parse(JSON.stringify(data)));
+				def.resolve(data.rows);
 			}
 		});
 
@@ -29,15 +29,15 @@ class Prefix {
 			INSERT INTO
 				prefix
 			VALUES (
-				?, ?, ?
+				'${guildId}', '0', '!k '
 			)
 		`;
 
-		db.query(query, [guildId, 0, '!k '], (err, data) => {
+		db.query(query, (err, data) => {
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(data.insertId);
+				def.resolve();
 			}
 		});
 

@@ -37,7 +37,6 @@ client.on('ready', () => {
 
 		channelController.getChannels(guild.id).then(data => {
 			channels[guild.id] = data;
-			console.log(data);
 		}, err => {
 			throw err;
 		});

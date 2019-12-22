@@ -99,17 +99,14 @@ client.on('guildMemberRemove', member => {
 });
 
 client.on('message', message => {
-	// !k sm 655852590931640330 655881083543355412 test
 	if(message.channel.type === 'dm'){
 		if(!message.author.bot && message.content.startsWith('!k ')){
-			elements = message.content.split(/\s+/).slice(1).map(element => (
-				element.toLowerCase()
-			));
+			elements = message.content.split(/\s+/).slice(1);
 
 			cmd = elements[0];
 			args = elements.slice(1);
 
-			switch(cmd){
+			switch(cmd.toLowerCase()){
 				case 'sm':
 				case 'sendmessage':
 					if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
@@ -131,7 +128,7 @@ client.on('message', message => {
 			}
 		}
 	} else {
-		if(channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
+		if(channels[message.guild.id] !== undefined && channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
 			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
 				.setColor('#0099ff')
 				.setTitle(`New Message - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
@@ -143,63 +140,78 @@ client.on('message', message => {
 			);
 		}
 
-		if(!message.author.bot && message.content.startsWith(prefixes[message.guild.id])){
-			elements = message.content.split(/\s+/).slice(1).map(element => (
-				element.toLowerCase()
-			));
+		if(!message.author.bot && message.member.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){
+			elements = message.content.split(/ +/).slice(1);
 
-			cmd = elements[0];
+			cmd = elements[0].toLowerCase();
 			args = elements.slice(1);
 
 			switch(cmd){
 				case 'ci':
 				case 'channelid':
-					if(channels[message.guild.id][0] !== undefined){
-						if(args.length < 1 || args[0].replace(/\D/g,'').length < 18){
-							message.channel
-								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel>*`)
-								.then(console.log(`Sent message: ${message.content}`))
-								.catch(console.error);
-						} else {
-							message.channel
-								.send(`Channel id:\n\t${args[0].replace(/\D/g,'')}`)
-								.then(console.log(`Sent message: ${message.content}`))
-								.catch(console.error);
-						}
+					if(args.length < 1 || args[0].replace(/\D/g,'').length < 18){
+						message.channel
+							.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel>*`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+					} else {
+						message.channel
+							.send(`Channel id:\n\t${args[0].replace(/\D/g,'')}`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
 					}
 
 					break;
 
-				case 'smc':
-					
+				case 'sm':
+				case 'sendmessage':
+					if(args.length < 2 || args[0].replace(/\D/g,'').length < 18){
+						message.channel
+							.send(`Command format is:\n\t!k ${cmd} *<channel> <message>*`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+					} else {
+						message.guild.channels.get(args[0])
+							.send(args.slice(1).join(' '))
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
+
+						if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
+							message.guild.channels.get(channels[message.guild.id][0])
+								.send(`Message sent to ${message.guild.channels.get(args[0]).name}`)
+								.then(console.log(`Sent message: ${message.content}`))
+								.catch(console.error);
+						}
+					}
 			}
 		}
 	}
 });
 
 client.on('messageDelete', message => {
-	if(channels[message.guild.id][3] !== undefined){
-		if(message.channel.id === channels[message.guild.id][3] && message.author.id === client.user.id){
-			// console.log(message.embeds[0].fields);
-			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
-				.setColor('#ff3636')
-				.setTitle(`${message.embeds[0].title}`)
-				.setAuthor(`${message.embeds[0].author.name}`, message.embeds[0].author.iconURL)
-				.setDescription(message.embeds[0].description)
-				.addField(message.embeds[0].fields[0].name, message.embeds[0].fields[0].value)	
-				.setImage(message.embeds[0].image === null? '' : message.embeds[0].image.url)
-				.setTimestamp()
-			);
-		} else {
-			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
-				.setColor('#ff710c')
-				.setTitle(`Message Deleted - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
-				.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
-				.setDescription(message.channel)
-				.addField(message.createdAt, message.content.length == 0? '\u200b' : message.content)	
-				.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
-				.setTimestamp()
-			);
+	if(channels[message.guild.id] !== undefined){
+		if(channels[message.guild.id][3] !== undefined){
+			if(message.channel.id === channels[message.guild.id][3] && message.author.id === client.user.id){
+				client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
+					.setColor('#ff3636')
+					.setTitle(`${message.embeds[0].title}`)
+					.setAuthor(`${message.embeds[0].author.name}`, message.embeds[0].author.iconURL)
+					.setDescription(message.embeds[0].description)
+					.addField(message.embeds[0].fields[0].name, message.embeds[0].fields[0].value)	
+					.setImage(message.embeds[0].image === null? '' : message.embeds[0].image.url)
+					.setTimestamp()
+				);
+			} else {
+				client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
+					.setColor('#ff710c')
+					.setTitle(`Message Deleted - ${message.attachments.size == 0? 'No' : 'Has'} Attachment`)
+					.setAuthor(`${message.author.tag} - ${message.author.id}`, message.author.avatarURL)
+					.setDescription(message.channel)
+					.addField(message.createdAt, message.content.length == 0? '\u200b' : message.content)	
+					.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
+					.setTimestamp()
+				);
+			}
 		}
 	}
 });

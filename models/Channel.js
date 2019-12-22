@@ -9,7 +9,7 @@ class Channel {
 				num
 			FROM channel_preference
 			WHERE
-				server = ${guildId}
+				server = ${guildId};
 		`;
 
 		db.query(query).then(res => {

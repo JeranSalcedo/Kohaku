@@ -7,19 +7,19 @@ const ChannelController = require('./controllers/channelController');
 const guildController = new GuildController();
 const channelController = new ChannelController();
 
-const pg = new Client({
+const connection = new Client({
 	connectionString: process.env.DATABASE_URL,
 	ssl: true
 });
 
-pg.connect(err => {
+connection.connect(err => {
 	if(err){
 		throw err;
 	}
 
 	console.log('Connected to the database');
 });
-global.db = pg;
+global.db = connection;
 
 const client = new Discord.Client();
 
@@ -35,11 +35,30 @@ client.on('ready', () => {
 			throw err;
 		});
 
-		channelController.getChannels(guild.id).then(data => {
-			channels[guild.id] = data;
-		}, err => {
-			throw err;
+
+		const query = `
+			SELECT
+				channel,
+				num
+			FROM channel_preference
+			WHERE
+				server = ?
+		`;
+
+		console.log("A");
+		db.query(query, [guildId], (err, data) => {
+		console.log("B");
+			if(err){
+				throw err;
+			} else {
+				console.log(JSON.parse(JSON.stringify(data)));
+			}
 		});
+		// channelController.getChannels(guild.id).then(data => {
+		// 	channels[guild.id] = data;
+		// }, err => {
+		// 	throw err;
+		// });
 	});
 });
 

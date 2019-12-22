@@ -13,11 +13,10 @@ class Channel {
 		`;
 
 		db.query(query, (err, data) => {
-			console.log(data.rows);
 			if(err){
 				def.reject(err);
 			} else {
-				def.resolve(JSON.parse(JSON.stringify(data)));
+				def.resolve(data.rows);
 			}
 		});
 

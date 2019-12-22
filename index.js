@@ -125,7 +125,7 @@ client.on('message', message => {
 			}
 		}
 	} else {
-		console.log(channels);
+		console.log(prefixes);
 		if(channels[message.guild.id] !== undefined && channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
 			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
 				.setColor('#0099ff')

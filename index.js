@@ -104,11 +104,6 @@ client.on('message', message => {
 			args = elements.slice(1);
 
 			switch(cmd.toLowerCase()){
-				case 'ls':
-					console.log(client.guilds);
-
-					break;
-
 				case 'sm':
 				case 'sendmessage':
 					if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
@@ -130,7 +125,7 @@ client.on('message', message => {
 			}
 		}
 	} else {
-		console.log(message.content);
+		console.log(channels);
 		if(channels[message.guild.id] !== undefined && channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){
 			client.channels.get(channels[message.guild.id][3]).send(new Discord.RichEmbed()
 				.setColor('#0099ff')

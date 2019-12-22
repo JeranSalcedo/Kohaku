@@ -36,28 +36,28 @@ client.on('ready', () => {
 		});
 
 
-		const query = `
-			SELECT
-				channel,
-				num
-			FROM channel_preference
-			WHERE
-				server = '655852590931640330'
-		`;
+		// const query = `
+		// 	SELECT
+		// 		channel,
+		// 		num
+		// 	FROM channel_preference
+		// 	WHERE
+		// 		server = '655852590931640330'
+		// `;
 
-		db.query(query, (err, data) => {
-		console.log(data);
-			if(err){
-				throw err;
-			} else {
-				console.log(JSON.parse(JSON.stringify(data)));
-			}
-		});
-		// channelController.getChannels(guild.id).then(data => {
-		// 	channels[guild.id] = data;
-		// }, err => {
-		// 	throw err;
+		// db.query(query, (err, data) => {
+		// console.log(data);
+		// 	if(err){
+		// 		throw err;
+		// 	} else {
+		// 		console.log(JSON.parse(JSON.stringify(data)));
+		// 	}
 		// });
+		channelController.getChannels(guild.id).then(data => {
+			channels[guild.id] = data;
+		}, err => {
+			throw err;
+		});
 	});
 });
 

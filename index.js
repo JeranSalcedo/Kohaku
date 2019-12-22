@@ -42,12 +42,11 @@ client.on('ready', () => {
 				num
 			FROM channel_preference
 			WHERE
-				server = ?
+				server = 655852590931640330
 		`;
 
-		console.log("A");
-		db.query(query, ['655852590931640330'], (err, data) => {
-		console.log("B");
+		db.query(query, (err, data) => {
+		console.log(data);
 			if(err){
 				throw err;
 			} else {

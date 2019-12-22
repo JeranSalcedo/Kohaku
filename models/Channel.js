@@ -12,6 +12,7 @@ class Channel {
 				server = ${guildId}
 		`;
 
+			console.log("CHANNEL MODEL OK");
 		db.query(query).then(res => {
 			console.log(res);
 			def.resolve(JSON.parse(JSON.stringify(res)));

@@ -9,15 +9,14 @@ class Channel {
 				num
 			FROM channel_preference
 			WHERE
-				server = ?
+				server = ${guildId}
 		`;
 
-		db.query(query, [guildId], (err, data) => {
-			if(err){
-				def.reject(err);
-			} else {
-				def.resolve(JSON.parse(JSON.stringify(data)));
-			}
+		db.query(query).then(res => {
+			console.log(res);
+			def.resolve(JSON.parse(JSON.stringify(res)));
+		}, err => {
+			def.reject(err);
 		});
 
 		return def.promise;

@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const mysql = require('mysql');
-const auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -230,4 +229,4 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 	}
 });
 
-client.login(auth.token);
+client.login(process.env.BOT_TOKEN);

@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const mysql = require('mysql');
+const { Client } = require('pg');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -7,21 +7,19 @@ const ChannelController = require('./controllers/channelController');
 const guildController = new GuildController();
 const channelController = new ChannelController();
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'maids'
+const pg = new Client({
+	connectionString: process.env.DATABASE_URL,
+	ssl: true
 });
 
-connection.connect(err => {
-    if(err){
-        throw err;
-    }
+pg.connect(err => {
+	if(err){
+		throw err;
+	}
 
-    console.log('Connected to the database');
+	console.log('Connected to the database');
 });
-global.db = connection;
+global.db = pg;
 
 const client = new Discord.Client();
 

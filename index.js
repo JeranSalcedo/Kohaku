@@ -104,38 +104,49 @@ client.on('message', message => {
 				cmd = elements[0];
 				args = elements.slice(1);
 
-				if(message.author.bot){
-					switch(cmd.toLowerCase()){
-						case 'updateChannels':
-						 	if(channels[args[0]] !== undefined && channels[args[0]][0] !== undefined){
-								client.guilds.get(args[0]).channels.get(channels[args[0]][0])
-									.send('Shut up')
-									.then(console.log(`Sent message: ${message.content}`))
-									.catch(console.error);
-						 	}
-					}
-				} else {
-					switch(cmd.toLowerCase()){
-						case 'sm':
-						case 'sendmessage':
-							if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
-								message.channel
-									.send(`Command format is:\n\t!k ${cmd} *<server> <channel> <message>*`)
-									.then(console.log(`Sent message: ${message.content}`))
-									.catch(console.error);
-							} else {
-								client.guilds.get(args[0]).channels.get(args[1])
-									.send(args.slice(2).join(' '))
-									.then(console.log(`Sent message: ${message.content}`))
-									.catch(console.error);
 
-								message.channel
-									.send(`Message sent to ${client.guilds.get(args[0]).name}: ${client.guilds.get(args[0]).channels.get(args[1]).name}`)
-									.then(console.log(`Sent message: ${message.content}`))
-									.catch(console.error);
-							}
+				client.fetchUser('254289067875893259').then(user => {
+					if(user.presence.status === 'online'){
+						user
+							.send(message.author)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
 					}
-				}
+				}, err => {
+					throw err;
+				});
+				// if(message.author.bot){
+				// 	switch(cmd.toLowerCase()){
+				// 		case 'updateChannels':
+				// 		 	if(channels[args[0]] !== undefined && channels[args[0]][0] !== undefined){
+				// 				client.guilds.get(args[0]).channels.get(channels[args[0]][0])
+				// 					.send('Shut up')
+				// 					.then(console.log(`Sent message: ${message.content}`))
+				// 					.catch(console.error);
+				// 		 	}
+				// 	}
+				// } else {
+				// 	switch(cmd.toLowerCase()){
+				// 		case 'sm':
+				// 		case 'sendmessage':
+				// 			if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
+				// 				message.channel
+				// 					.send(`Command format is:\n\t!k ${cmd} *<server> <channel> <message>*`)
+				// 					.then(console.log(`Sent message: ${message.content}`))
+				// 					.catch(console.error);
+				// 			} else {
+				// 				client.guilds.get(args[0]).channels.get(args[1])
+				// 					.send(args.slice(2).join(' '))
+				// 					.then(console.log(`Sent message: ${message.content}`))
+				// 					.catch(console.error);
+
+				// 				message.channel
+				// 					.send(`Message sent to ${client.guilds.get(args[0]).name}: ${client.guilds.get(args[0]).channels.get(args[1]).name}`)
+				// 					.then(console.log(`Sent message: ${message.content}`))
+				// 					.catch(console.error);
+				// 			}
+				// 	}
+				// }
 			}
 		} else {
 			if(channels[message.guild.id] !== undefined && channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){

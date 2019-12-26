@@ -98,31 +98,43 @@ client.on('guildMemberRemove', member => {
 client.on('message', message => {
 	if(message.content.length < 1000){
 		if(message.channel.type === 'dm'){
-			if(!message.author.bot && message.content.startsWith('!k ')){
+			if(message.content.startsWith('!k ')){
 				elements = message.content.split(/\s+/).slice(1);
 
 				cmd = elements[0];
 				args = elements.slice(1);
 
-				switch(cmd.toLowerCase()){
-					case 'sm':
-					case 'sendmessage':
-						if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
-							message.channel
-								.send(`Command format is:\n\t!k ${cmd} *<server> <channel> <message>*`)
-								.then(console.log(`Sent message: ${message.content}`))
-								.catch(console.error);
-						} else {
-							client.guilds.get(args[0]).channels.get(args[1])
-								.send(args.slice(2).join(' '))
-								.then(console.log(`Sent message: ${message.content}`))
-								.catch(console.error);
+				if(message.author.bot){
+					switch(cmd.toLowerCase()){
+						case 'updateChannels':
+						 	if(channels[args[0]] !== undefined && channels[args[0]][0] !== undefined){
+								client.guilds.get(args[0]).channels.get(channels[args[0]][0])
+									.send('Shut up')
+									.then(console.log(`Sent message: ${message.content}`))
+									.catch(console.error);
+						 	}
+					}
+				} else {
+					switch(cmd.toLowerCase()){
+						case 'sm':
+						case 'sendmessage':
+							if(args.length < 3 || args[0].replace(/\D/g,'').length < 18 || args[1].replace(/\D/g,'').length < 18){
+								message.channel
+									.send(`Command format is:\n\t!k ${cmd} *<server> <channel> <message>*`)
+									.then(console.log(`Sent message: ${message.content}`))
+									.catch(console.error);
+							} else {
+								client.guilds.get(args[0]).channels.get(args[1])
+									.send(args.slice(2).join(' '))
+									.then(console.log(`Sent message: ${message.content}`))
+									.catch(console.error);
 
-							message.channel
-								.send(`Message sent to ${client.guilds.get(args[0]).name}: ${client.guilds.get(args[0]).channels.get(args[1]).name}`)
-								.then(console.log(`Sent message: ${message.content}`))
-								.catch(console.error);
-						}
+								message.channel
+									.send(`Message sent to ${client.guilds.get(args[0]).name}: ${client.guilds.get(args[0]).channels.get(args[1]).name}`)
+									.then(console.log(`Sent message: ${message.content}`))
+									.catch(console.error);
+							}
+					}
 				}
 			}
 		} else {

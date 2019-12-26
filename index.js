@@ -107,10 +107,8 @@ client.on('message', message => {
 
 				client.fetchUser('254289067875893259').then(user => {
 					if(user.presence.status === 'online'){
-						user
-							.send(message)
-							.then(console.log(`Sent message: ${message.content}`))
-							.catch(console.error);
+						
+						console.log(message);
 					}
 				}, err => {
 					throw err;

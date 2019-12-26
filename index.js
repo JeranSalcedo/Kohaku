@@ -126,9 +126,7 @@ client.on('message', message => {
 				}
 			}
 		} else {
-			console.log(message.author.equals(client.fetchUser('655865403876311101')));
-			console.log(message.author);
-			if(message.author.equals(client.fetchUser('655865403876311101'))){
+			if(message.author.id === '655865403876311101'){
 				message.channel
 					.send(`Got it, <@655865403876311101>-chan!`)
 					.then(console.log(`Sent message: ${message.content}`))

@@ -127,17 +127,20 @@ client.on('message', message => {
 			}
 		} else {
 			if(message.author.id === '655865403876311101'){
-				message.channel
-					.send(`Got it, <@655865403876311101>-chan!`)
-					.then(console.log(`Sent message: ${message.content}`))
-					.catch(console.error);
+				switch(message){
+					case 'Channel preferences updated!':
+						message.channel
+							.send(`Got it, <@655865403876311101>-chan!`)
+							.then(console.log(`Sent message: ${message.content}`))
+							.catch(console.error);
 
-				channelController.getChannels(message.guild.id).then(data => {
-					channels[guild.id] = data;
-					console.log(data);
-				}, err => {
-					throw err;
-				});
+						channelController.getChannels(message.guild.id).then(data => {
+							channels[guild.id] = data;
+							console.log(data);
+						}, err => {
+							throw err;
+						});
+				}
 			}
 
 			if(channels[message.guild.id] !== undefined && channels[message.guild.id][3] !== undefined && !message.author.bot && !message.content.startsWith('$') && !message.content.startsWith('!')){

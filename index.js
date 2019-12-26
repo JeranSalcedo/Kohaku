@@ -64,7 +64,7 @@ client.on('guildMemberAdd', member => {
 		if(channels[member.guild.id][1] !== undefined){
 			client.channels.get(channels[member.guild.id][1])
 				.send(`Welcome to the ORSTED Co. crew server, <@${member.id}>!\nPlease check the rules over at <#${channels[member.guild.id][4]}> and wait for an admin to give you the crew role.`)
-				.then(console.log(`New member: ${member.tag} - ${member.id}`))
+				.then(console.log(`New member: ${member.user.tag} - ${member.id}`))
 				.catch(console.error);
 		}
 
@@ -145,16 +145,16 @@ client.on('message', message => {
 				args = elements.slice(1);
 
 				switch(cmd){
-					case 'ci':
-					case 'channelid':
+					case 'gi':
+					case 'getid':
 						if(args.length < 1 || args[0].replace(/\D/g,'').length < 18){
 							message.channel
-								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel>*`)
+								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel/role/user>*`)
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
 							message.channel
-								.send(`Channel id:\n\t${args[0].replace(/\D/g,'')}`)
+								.send(`Id:\n\t${args[0].replace(/\D/g,'')}`)
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						}
@@ -165,7 +165,7 @@ client.on('message', message => {
 					case 'sendmessage':
 						if(args.length < 2 || args[0].replace(/\D/g,'').length < 18){
 							message.channel
-								.send(`Command format is:\n\t!k ${cmd} *<channel> <message>*`)
+								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<channel> <message>*`)
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {

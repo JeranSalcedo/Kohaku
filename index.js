@@ -127,6 +127,8 @@ client.on('message', message => {
 			}
 		} else {
 			if(message.author.id === '655865403876311101'){
+				console.log(message);
+				console.log(message === 'Channel preferences updated!');
 				switch(message){
 					case 'Channel preferences updated!':
 						message.channel

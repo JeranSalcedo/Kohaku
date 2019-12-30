@@ -222,7 +222,7 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							console.log(`${args[2]} ${{args[1]}} ${args[0]} * * *`);
+							console.log(`${args[2]} ${args[1]} ${args[0]} * * *`);
 							new CronJob(`${args[2]} * * * * *`, () => {
 								currentDate = new Date();
 								console.log(`${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}`);

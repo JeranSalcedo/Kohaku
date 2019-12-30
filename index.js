@@ -231,10 +231,8 @@ client.on('message', message => {
 							new CronJob(`${args[2]} ${args[1]} * * * *`, () => {
 								currentDate = new Date();
 
-								console.log(alarms);
-								console.log(message.guild.id);
 								console.log(`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`);
-								console.log(alarms[message.guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]);
+								console.log(alarms[`'${message.guild.id}'`][`'${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}'`]);
 							}, null, true, 'Asia/Tokyo');
 							// console.log()
 							// message.guild.channels.find(channel => (

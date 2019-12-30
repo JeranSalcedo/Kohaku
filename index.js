@@ -277,7 +277,7 @@ client.on('message', message => {
 						Object.keys(alarms[message.guild.id]).forEach(key => {
 							string = `${string}\n\t${key.substring(0, 2)}:${key.substring(2, 4)}:${key.substring(4, 6)} - ${alarms[message.guild.id][key]}`;
 						});
-						message.channels
+						message.channel
 							.send(`All active alarms:${string}`)
 							.then(console.log(`Sent message: ${message.content}`))
 							.catch(console.error);

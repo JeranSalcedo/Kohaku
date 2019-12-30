@@ -2,8 +2,6 @@ const Q = require('q');
 
 class Alarm {
 	getAlarm(guildId, time){
-		console.log(guildId);
-		console.log(time);
 		const def = Q.defer();
 		const query = `
 			SELECT
@@ -16,10 +14,8 @@ class Alarm {
 
 		db.query(query, (err, data) => {
 			if(err){
-		console.log('e');
 				def.reject(err);
 			} else {
-		console.log('f');
 				def.resolve(data.rows);
 			}
 		});

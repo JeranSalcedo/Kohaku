@@ -224,21 +224,16 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							guildController.setAlarm(message.guild.id, `${args[0]}${args[1]}${args[2]}`, args.slice(3).join(' ')).then(data => {
-								console.log(data);
 								if(alarms[data.guildId] === undefined){
 									alarms[data.guildId] = {};
 								}
 								alarms[data.guildId][data.time] = data.message;
-								console.log(alarms);
 								new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
 									currentDate = new Date();
 
 									if(channels[data.guildId] !== undefined && channels[data.guildId][0] !== undefined){
-										console.log(alarms[data.guildId][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]);
-										console.log(alarms[data.guildId]);
-										console.log(`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`);
 										message.guild.channels.get(channels[data.guildId][0])
-											.send('bleh')
+											.send(alarms[data.guildId][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
 											.then(console.log(`Sent message: ${message.content}`))
 											.catch(console.error);
 									}

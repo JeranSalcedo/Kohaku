@@ -53,7 +53,7 @@ client.on('ready', () => {
 					if(channels[guild.id] !== undefined && channels[guild.id][1] !== undefined){
 						guild.channels.get(channels[guild.id][1])
 							.send(alarms[guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
-							.then(console.log(`Sent message: ${message.content}`))
+							.then(console.log(`Sent message: ${alarms[guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]}`))
 							.catch(console.error);
 					}
 				}, null, true, 'Asia/Tokyo');

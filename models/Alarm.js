@@ -24,6 +24,7 @@ class Alarm {
 	}
 
 	addAlarm(guildId, time, message){
+		console.log('b');
 		const def = Q.defer();
 		const query = `
 			INSERT INTO

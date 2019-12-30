@@ -207,8 +207,8 @@ client.on('message', message => {
 
 						break;
 
-					case 'aa':
-					case 'addalarm':
+					case 'sa':
+					case 'setalarm':
 						if(
 							args.length < 4 ||
 							args[0].replace(/\D/g,'').length < 2||

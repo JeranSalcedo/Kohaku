@@ -42,6 +42,13 @@ client.on('ready', () => {
 		}, err => {
 			throw err;
 		});
+
+		guildController.getAlarms(guild.id).then(data => {
+			console.log(data);
+			// alarms[guild.id] = data;
+		}, err => {
+			throw err;
+		});
 	});
 });
 

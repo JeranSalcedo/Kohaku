@@ -73,6 +73,23 @@ class guildController {
 
 		return def.promise;
 	}
+
+	getAlarms(guildId){
+		const def = Q.defer();
+
+		const request = alarmModel.getAlarm_guild(guildId);
+		request.then(data => {
+			if(data.length == 0){
+				def.resolve('');
+			} else {
+				def.resolve(data);
+			}
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
 }
 
 module.exports = guildController;

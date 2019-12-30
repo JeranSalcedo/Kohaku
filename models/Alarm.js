@@ -23,6 +23,28 @@ class Alarm {
 		return def.promise;
 	}
 
+	getAlarm_guild(guildId){
+		const def = Q.defer();
+		const query = `
+			SELECT
+				time,
+				message
+			FROM alarm
+			WHERE
+				server = '${guildId}'
+		`;
+
+		db.query(query, (err, data) => {
+			if(err){
+				def.reject(err);
+			} else {
+				def.resolve(data.rows);
+			}
+		});
+
+		return def.promise;
+	}
+
 	addAlarm(guildId, time, message){
 		console.log('d');
 		const def = Q.defer();

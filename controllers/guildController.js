@@ -82,7 +82,11 @@ class guildController {
 			if(data.length == 0){
 				def.resolve('');
 			} else {
-				def.resolve(data);
+				def.resolve(data.reduce((obj, alarm) => {
+					Object.assign(obj, {
+						[alarm.time]: alarm.value
+					})
+				}, {}));
 			}
 		}, err => {
 			def.reject(err);

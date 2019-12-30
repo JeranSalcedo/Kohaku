@@ -11,7 +11,7 @@ class Alarm {
 			FROM alarm
 			WHERE
 				server = '${guildId}' AND
-				time = '${time}''
+				time = '${time}'
 		`;
 
 		db.query(query, (err, data) => {

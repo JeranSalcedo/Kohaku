@@ -50,11 +50,9 @@ class guildController {
 	setAlarm(guildId, time, message){
 		const def = Q.defer();
 
-		console.log('a');
 		const checkRequest = alarmModel.getAlarm(guildId, time);
 		checkRequest.then(data => {
 			if(data.length == 0){
-		console.log('c');
 				const addRequest = alarmModel.addAlarm(guildId, time, message);
 				addRequest.then(data => {
 					def.resolve({guildId, time, message});
@@ -62,7 +60,12 @@ class guildController {
 					def.reject(err);
 				});
 			} else {
-				def.resolve({guildId, time, message});
+				const updateRequest = alarmModel.updateAlarm(guildId, time, message);
+				addRequest.then(data => {
+					def.resolve({guildId, time, message});
+				}, err => {
+					def.reject(err);
+				});
 			}
 		}, err => {
 			def.reject(err);

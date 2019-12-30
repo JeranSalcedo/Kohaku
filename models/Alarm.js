@@ -48,6 +48,29 @@ class Alarm {
 
 		return def.promise;
 	}
+
+	updateAlarm(guildId, time, message){
+		const def = Q.defer();
+		const query = `
+			UPDATE
+				alarm
+			SET 
+				message = '${message}'
+			WHERE
+				server = '${guildId}' AND
+				time = '${time}'
+		`;
+
+		db.query(query, (err, data) => {
+			if(err){
+				def.reject(err);
+			} else {
+				def.resolve();
+			}
+		});
+
+		return def.promise;
+	}
 }
 
 module.exports = Alarm;

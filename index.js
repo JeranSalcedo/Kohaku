@@ -223,35 +223,31 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							if(alarms[message.guild.id] === undefined){
-								alarms[message.guild.id] = {};
-							}
-							alarms[message.guild.id][`${String(args[0]).padStart(2, '0')}${String(args[1]).padStart(2, '0')}${String(args[2]).padStart(2, '0')}`] = args.slice(3).join(' ');
-							console.log(`${args[2]} ${args[1]} ${args[0]} * * *`);
-							new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
-								currentDate = new Date();
+							guildController.setAlarm(message.guild.id, `${args[2]}${args[1]}${args[0]}`, args.slice(3).join(' ')).then(data => {
+								if(alarms[data.guildId] === undefined){
+									alarms[data.guildId] = {};
+								}
+								alarms[data.guildId][data.time] = args.slice(3).join(' ');
+								new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
+									currentDate = new Date();
 
-								if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
-									message.guild.channels.get(channels[message.guild.id][0])
-										.send(alarms[`${message.guild.id}`][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
+									if(channels[data.guildId] !== undefined && channels[data.guildId][0] !== undefined){
+										message.guild.channels.get(channels[data.guildId][0])
+											.send(alarms[`${data.guildId}`][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
+											.then(console.log(`Sent message: ${message.content}`))
+											.catch(console.error);
+									}
+								}, null, true, 'Asia/Tokyo');
+
+								if(channels[data.guildId] !== undefined && channels[data.guildId][0] !== undefined){
+									message.guild.channels.get(channels[data.guildId][0])
+										.send(`Alarm has been set:\n\t${args[0]}:${args[1]}:${args[2]} - ${args.slice(3).join(' ')}`)
 										.then(console.log(`Sent message: ${message.content}`))
 										.catch(console.error);
 								}
-							}, null, true, 'Asia/Tokyo');
-							// console.log()
-							// message.guild.channels.find(channel => (
-							// 	channel.id == args[0].replace(/\D/g,'')
-							// ))
-							// .send(args.slice(1).join(' '))
-							// .then(console.log(`Sent message: ${message.content}`))
-							// .catch(console.error);
-
-							if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
-								message.guild.channels.get(channels[message.guild.id][0])
-									.send(`Alarm has been set:\n\t${args[0]}:${args[1]}:${args[2]} - ${args.slice(3).join(' ')}`)
-									.then(console.log(`Sent message: ${message.content}`))
-									.catch(console.error);
-							}
+							}, err => {
+								throw err;
+							});
 						}
 				}
 			}

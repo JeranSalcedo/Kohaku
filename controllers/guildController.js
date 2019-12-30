@@ -1,9 +1,11 @@
 const Q = require('q');
 const Prefix = require('../models/Prefix');
 const Role = require('../models/Role');
+const Alarm = require('../models/Alarm');
 
 const prefixModel = new Prefix();
 const roleModel = new Role();
+const alarmModel = new Alarm();
 
 class guildController {
 	getPrefix(guildId){
@@ -37,6 +39,28 @@ class guildController {
 					def.resolve('');
 			} else {
 				def.resolve(data[0].role);
+			}
+		}, err => {
+			def.reject(err);
+		});
+
+		return def.promise;
+	}
+
+	setAlarm(guildId, time, message){
+		const def = Q.defer();
+
+		const checkRequest = alarmModel.getAlarm(guildId, time);
+		checkRequest.then(data => {
+			if(data.length == 0){
+				const addRequest = alarmModel.addAlarm(guildId, time, message);
+				addRequest.then(data => {
+					def.resolve({guildId, time, message});
+				}, err => {
+					def.reject(err);
+				});
+			} else {
+				def.resolve({guildId, time, message});
 			}
 		}, err => {
 			def.reject(err);

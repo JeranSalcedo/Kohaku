@@ -222,10 +222,12 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							var temp = cron.job(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
-								console.log("test");
+							console.log("created");
+							var temp = cron.job(`17 22 00 * * *`, () => {
+								console.log(args.slice(3).join(' '));
 							});
 
+							console.log("start");
 							temp.start();
 							// console.log()
 							// message.guild.channels.find(channel => (

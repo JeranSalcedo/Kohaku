@@ -84,7 +84,7 @@ class guildController {
 			} else {
 				def.resolve(data.reduce((obj, alarm) => (
 					Object.assign(obj, {
-						[alarm.time]: alarm.value
+						[alarm.time]: alarm.message
 					})
 				), {}));
 			}

@@ -44,8 +44,21 @@ client.on('ready', () => {
 		});
 
 		guildController.getAlarms(guild.id).then(data => {
-			console.log(data);
-			// alarms[guild.id] = data;
+			alarms[guild.id] = data;
+
+			Object.keys(alarms[guild.id]).forEach(key => {
+				console.log(`${key.substring(4, 6)} ${key.substring(2, 4)} ${key.substring(0, 2)} * * *`);
+				// new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
+				// 	currentDate = new Date();
+
+				// 	if(channels[data.guildId] !== undefined && channels[data.guildId][0] !== undefined){
+				// 		message.guild.channels.get(channels[data.guildId][0])
+				// 			.send(alarms[data.guildId][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
+				// 			.then(console.log(`Sent message: ${message.content}`))
+				// 			.catch(console.error);
+				// 	}
+				// }, null, true, 'Asia/Tokyo');
+			});
 		}, err => {
 			throw err;
 		});

@@ -2,7 +2,8 @@ const Q = require('q');
 
 class Alarm {
 	getAlarm(guildId, time){
-		console.log('b');
+		console.log(guildId);
+		console.log(time);
 		const def = Q.defer();
 		const query = `
 			SELECT
@@ -10,7 +11,7 @@ class Alarm {
 			FROM alarm
 			WHERE
 				server = '${guildId}' AND
-				time = ${time}
+				time = '${time}''
 		`;
 
 		db.query(query, (err, data) => {

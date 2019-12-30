@@ -223,7 +223,7 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							guildController.setAlarm(message.guild.id, `${args[2]}${args[1]}${args[0]}`, args.slice(3).join(' ')).then(data => {
+							guildController.setAlarm(message.guild.id, `${args[0]}${args[1]}${args[2]}`, args.slice(3).join(' ')).then(data => {
 								console.log(data);
 								if(alarms[data.guildId] === undefined){
 									alarms[data.guildId] = {};

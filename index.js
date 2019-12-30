@@ -222,9 +222,10 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							console.log("created");
-							new CronJob('* * * * * *', () => {
-								console.log(args.slice(3).join(' '));
+							console.log(`${args[2]} * * * * *`);
+							new CronJob(`${args[2]} * * * * *`, () => {
+								this.message = args.slice(3).join('');
+								console.log(this.message);
 							}, null, true, 'Asia/Tokyo');
 							// console.log()
 							// message.guild.channels.find(channel => (

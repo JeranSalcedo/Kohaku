@@ -228,7 +228,7 @@ client.on('message', message => {
 							}
 							alarms[message.guild.id][`${String(args[0]).padStart(2, '0')}${String(args[1]).padStart(2, '0')}${String(args[2]).padStart(2, '0')}`] = args.slice(3).join(' ');
 							console.log(`${args[2]} ${args[1]} ${args[0]} * * *`);
-							new CronJob(`${args[2]} ${args[1]} * * * *`, () => {
+							new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
 								currentDate = new Date();
 
 								console.log(alarms[`${message.guild.id}`][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]);

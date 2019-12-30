@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const { Client } = require('pg');
+const cron = require('cron');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -221,6 +222,11 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
+							var temp = cron.job(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
+								console.log("test");
+							});
+
+							temp.start();
 							// console.log()
 							// message.guild.channels.find(channel => (
 							// 	channel.id == args[0].replace(/\D/g,'')

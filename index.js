@@ -207,7 +207,15 @@ client.on('message', message => {
 
 					case 'aa':
 					case 'addalarm':
-						if(args.length < 4 || args[0].replace(/\D/g,'').length < 2 || args[1].replace(/\D/g,'').length < 2 || args[2].replace(/\D/g,'').length < 2){
+						if(
+							args.length < 4 ||
+							args[0].replace(/\D/g,'').length < 2||
+							args[1].replace(/\D/g,'').length < 2 ||
+							args[2].replace(/\D/g,'').length < 2 ||
+							parseInt(args[0].replace(/\D/g,''), 10) > 23 ||
+							parseInt(args[1].replace(/\D/g,''), 10) > 59 ||
+							parseInt(args[2].replace(/\D/g,''), 10) > 59
+						){
 							message.channel
 								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<hours> <minutes> <seconds> <message>*`)
 								.then(console.log(`Sent message: ${message.content}`))
@@ -223,7 +231,7 @@ client.on('message', message => {
 
 							if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
 								message.guild.channels.get(channels[message.guild.id][0])
-									.send(`Alarm has been set:\n${args[0]}:${args[1]}:${args[2]} - ${args.slice(3).join(' ')}`)
+									.send(`Alarm has been set:\n\t${args[0]}:${args[1]}:${args[2]} - ${args.slice(3).join(' ')}`)
 									.then(console.log(`Sent message: ${message.content}`))
 									.catch(console.error);
 							}

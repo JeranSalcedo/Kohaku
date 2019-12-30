@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { Client } = require('pg');
-const cron = require('cron');
+const CronJob = require('cron').CronJob;
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -223,12 +223,9 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							console.log("created");
-							var temp = cron.job(`17 22 00 * * *`, () => {
+							var temp = new CronJob(`18 32 00 * * *`, () => {
 								console.log(args.slice(3).join(' '));
-							});
-
-							console.log("start");
-							temp.start();
+							}, null, true, 'Asia/Tokyo');
 							// console.log()
 							// message.guild.channels.find(channel => (
 							// 	channel.id == args[0].replace(/\D/g,'')

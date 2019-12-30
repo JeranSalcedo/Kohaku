@@ -222,8 +222,8 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
-							console.log(`${args[2]} * * * * *`);
-							new CronJob(`${args[2]} * * * * *`, () => {
+							console.log(`* * * * * *`);
+							new CronJob(`* * * * * *`, () => {
 								this.message = args.slice(3).join('');
 								console.log(this.message);
 							}, null, true, 'Asia/Tokyo');

@@ -2,6 +2,7 @@ const Q = require('q');
 
 class Alarm {
 	getAlarm(guildId, time){
+		console.log('b');
 		const def = Q.defer();
 		const query = `
 			SELECT
@@ -14,8 +15,10 @@ class Alarm {
 
 		db.query(query, (err, data) => {
 			if(err){
+		console.log('e');
 				def.reject(err);
 			} else {
+		console.log('f');
 				def.resolve(data.rows);
 			}
 		});
@@ -24,7 +27,7 @@ class Alarm {
 	}
 
 	addAlarm(guildId, time, message){
-		console.log('b');
+		console.log('d');
 		const def = Q.defer();
 		const query = `
 			INSERT INTO

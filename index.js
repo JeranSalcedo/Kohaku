@@ -226,13 +226,12 @@ client.on('message', message => {
 							if(alarms[message.guild.id] === undefined){
 								alarms[message.guild.id] = {};
 							}
-							alarms[message.guild.id][`${args[0] + 9 > 23? args[0] - 15 : args[0]}${args[1]}${args[2]}`] = args.slice(3).join(' ');
+							alarms[message.guild.id][`${String(args[0]).padStart(2, '0')}${String(args[1]).padStart(2, '0')}${String(args[2]).padStart(2, '0')}`] = args.slice(3).join(' ');
 							console.log(`${args[2]} ${args[1]} ${args[0]} * * *`);
 							new CronJob(`${args[2]} ${args[1]} * * * *`, () => {
 								currentDate = new Date();
 
-								console.log(alarms[`${message.guild.id}`]);
-								console.log(`'${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}'`);
+								console.log(alarms[`${message.guild.id}`][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]);
 								// console.log(alarms[`'${message.guild.id}'`][`'${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}'`]);
 							}, null, true, 'Asia/Tokyo');
 							// console.log()

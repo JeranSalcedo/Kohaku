@@ -235,6 +235,8 @@ client.on('message', message => {
 
 									if(channels[data.guildId] !== undefined && channels[data.guildId][0] !== undefined){
 										console.log(alarms[data.guildId][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]);
+										console.log(alarms[data.guildId]);
+										console.log(`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`);
 										message.guild.channels.get(channels[data.guildId][0])
 											.send('bleh')
 											.then(console.log(`Sent message: ${message.content}`))

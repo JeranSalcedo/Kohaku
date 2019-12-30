@@ -26,6 +26,7 @@ const client = new Discord.Client();
 
 var prefixes = {};
 var channels = {};
+var alarms = {};
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -222,10 +223,15 @@ client.on('message', message => {
 								.then(console.log(`Sent message: ${message.content}`))
 								.catch(console.error);
 						} else {
+							if(alarms[message.guild.id] === undefined){
+								alarms[message.guild.id] = {};
+							}
+							alarms[message.guild.id][`${args[0] + 9 > 23? args[0] - 15 : args[0]}${args[1]}${args[2]}`] = args.slice(3).join(' ');
 							console.log(`${args[2]} ${args[1]} ${args[0]} * * *`);
-							new CronJob(`${args[2]} * * * * *`, () => {
+							new CronJob(`${args[2]} ${args[1]} * * * *`, () => {
 								currentDate = new Date();
-								console.log(`${currentDate.getHours()}${currentDate.getMinutes()}${currentDate.getSeconds()}`);
+								console.log(`${currentDate.getHours() + 9 > 23? currentDate.getHours() - 15 : currentDate.getHours() + 9}${currentDate.getMinutes()}${currentDate.getSeconds()}`);
+								console.log(alarms[message.guild.id][`${currentDate.getHours() + 9 > 23? currentDate.getHours() - 15 : currentDate.getHours() + 9}${currentDate.getMinutes()}${currentDate.getSeconds()}`]);
 							}, null, true, 'Asia/Tokyo');
 							// console.log()
 							// message.guild.channels.find(channel => (

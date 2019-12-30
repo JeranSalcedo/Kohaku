@@ -224,7 +224,7 @@ client.on('message', message => {
 						} else {
 							console.log(`* * * * * *`);
 							new CronJob(`* * * * * *`, () => {
-								var message = args.slice(3).join('');
+								const message = args.slice(3).join('');
 								console.log(message);
 							}, null, true, 'Asia/Tokyo');
 							// console.log()

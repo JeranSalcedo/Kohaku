@@ -247,7 +247,6 @@ client.on('message', message => {
 									alarms[data.guildId] = {};
 								}
 								alarms[data.guildId][data.time] = data.message;
-								console.log(alarms);
 								new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
 									currentDate = new Date();
 

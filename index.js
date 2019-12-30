@@ -202,6 +202,32 @@ client.on('message', message => {
 									.catch(console.error);
 							}
 						}
+
+						break;
+
+					case 'aa':
+					case 'addalarm':
+						if(args.length < 4 || args[0].replace(/\D/g,'').length < 2 || args[1].replace(/\D/g,'').length < 2 || args[2].replace(/\D/g,'').length < 2){
+							message.channel
+								.send(`Command format is:\n\t${prefixes[message.guild.id]}${cmd} *<hours> <minutes> <seconds> <message>*`)
+								.then(console.log(`Sent message: ${message.content}`))
+								.catch(console.error);
+						} else {
+							// console.log()
+							// message.guild.channels.find(channel => (
+							// 	channel.id == args[0].replace(/\D/g,'')
+							// ))
+							// .send(args.slice(1).join(' '))
+							// .then(console.log(`Sent message: ${message.content}`))
+							// .catch(console.error);
+
+							if(channels[message.guild.id] !== undefined && channels[message.guild.id][0] !== undefined){
+								message.guild.channels.get(channels[message.guild.id][0])
+									.send(`Alarm has been set:\n${args[0]}:${args[1]}:${args[2]} - ${args.slice(3).join(' ')}`)
+									.then(console.log(`Sent message: ${message.content}`))
+									.catch(console.error);
+							}
+						}
 				}
 			}
 		}

@@ -224,10 +224,12 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							guildController.setAlarm(message.guild.id, `${args[2]}${args[1]}${args[0]}`, args.slice(3).join(' ')).then(data => {
+								console.log(data);
 								if(alarms[data.guildId] === undefined){
 									alarms[data.guildId] = {};
 								}
-								alarms[data.guildId][data.time] = args.slice(3).join(' ');
+								alarms[data.guildId][data.time] = data.message;
+								console.log(alarms);
 								new CronJob(`${args[2]} ${args[1]} ${args[0]} * * *`, () => {
 									currentDate = new Date();
 

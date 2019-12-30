@@ -6,8 +6,8 @@ class Alarm {
 		const def = Q.defer();
 		const query = `
 			SELECT
-				alarm
-			FROM role
+				message
+			FROM alarm
 			WHERE
 				server = '${guildId}' AND
 				time = ${time}

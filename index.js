@@ -223,7 +223,7 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							console.log("created");
-							var temp = new CronJob(`18 32 00 * * *`, () => {
+							var temp = new CronJob('* * * * * *', () => {
 								console.log(args.slice(3).join(' '));
 							}, null, true, 'Asia/Tokyo');
 							// console.log()

@@ -223,9 +223,9 @@ client.on('message', message => {
 								.catch(console.error);
 						} else {
 							console.log(`* * * * * *`);
-							new CronJob(`* * * * * *`, () => {
-								const message = args.slice(3).join('');
-								console.log(message);
+							new CronJob(`* * * * * *`, function(){
+								const alarmMessage = args.slice(3).join('');
+								console.log(alarmMessage);
 							}, null, true, 'Asia/Tokyo');
 							// console.log()
 							// message.guild.channels.find(channel => (

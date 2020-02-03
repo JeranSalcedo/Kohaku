@@ -39,24 +39,24 @@ client.on('ready', () => {
 
 		channelController.getChannels(guild.id).then(data => {
 			channels[guild.id] = data;
-		}, err => {
-			throw err;
-		});
 
-		guildController.getAlarms(guild.id).then(data => {
-			alarms[guild.id] = data;
+			guildController.getAlarms(guild.id).then(data => {
+				alarms[guild.id] = data;
 
-			Object.keys(alarms[guild.id]).forEach(key => {
-				new CronJob(`${key.substring(4, 6)} ${key.substring(2, 4)} ${key.substring(0, 2)} * * *`, () => {
-					currentDate = new Date();
+				Object.keys(alarms[guild.id]).forEach(key => {
+					new CronJob(`${key.substring(4, 6)} ${key.substring(2, 4)} ${key.substring(0, 2)} * * *`, () => {
+						currentDate = new Date();
 
-					if(channels[guild.id] !== undefined && channels[guild.id][1] !== undefined){
-						guild.channels.get(channels[guild.id][1])
-							.send(alarms[guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
-							.then(console.log(`Sent message: ${alarms[guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]}`))
-							.catch(console.error);
-					}
-				}, null, true, 'Asia/Tokyo');
+						if(channels[guild.id] !== undefined && channels[guild.id][1] !== undefined){
+							guild.channels.get(channels[guild.id][1])
+								.send(alarms[guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`])
+								.then(console.log(`Sent message: ${alarms[guild.id][`${currentDate.getHours() + 9 > 23? String(currentDate.getHours() - 15).padStart(2, '0') : String(currentDate.getHours() + 9).padStart(2, '0')}${String(currentDate.getMinutes()).padStart(2, '0')}${String(currentDate.getSeconds()).padStart(2, '0')}`]}`))
+								.catch(console.error);
+						}
+					}, null, true, 'Asia/Tokyo');
+				});
+			}, err => {
+				throw err;
 			});
 		}, err => {
 			throw err;
@@ -174,6 +174,12 @@ client.on('message', message => {
 					.setImage(message.attachments.size == 0? '' : message.attachments.values().next().value.url)
 					.setTimestamp()
 				);
+			}
+
+			if(message.content === '!slam <@!655865403876311101>' && message.author.id === '273579032098897922'){
+				message.channel
+					.send('!slam <@273579032098897922>')
+					.then(console.log(`Sent message: ${message.content}`))
 			}
 
 			if(!message.author.bot && message.member.hasPermission('ADMINISTRATOR') && message.content.startsWith(prefixes[message.guild.id])){

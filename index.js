@@ -176,9 +176,9 @@ client.on('message', message => {
 				);
 			}
 
-			if(message.content === '!slam <@!655865403876311101>' && message.author.id === '273579032098897922'){
+			if(message.content === '~slam <@!655865403876311101>' && message.author.id === '273579032098897922'){
 				message.channel
-					.send('!slam <@273579032098897922>')
+					.send('~slam <@273579032098897922>')
 					.then(console.log(`Sent message: ${message.content}`))
 			}
 

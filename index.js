@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { Client } = require('pg');
 const CronJob = require('cron').CronJob;
+// const Auth = require('./auth.json');
 
 const GuildController = require('./controllers/guildController');
 const ChannelController = require('./controllers/channelController');
@@ -27,6 +28,7 @@ const client = new Discord.Client();
 var prefixes = {};
 var channels = {};
 var alarms = {};
+var ignoredMessages = [];
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -335,6 +337,30 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 				.setImage(oldMessage.attachments.size == 0? '' : oldMessage.attachments.values().next().value.url)
 				.setTimestamp()
 			);
+		}
+	}
+});
+
+client.on('messageReactionAdd', (messageReaction, user) => {
+	if(!ignoredMessages.includes(messageReaction.message.id) && messageReaction.message.author.equals(client.user) && !user.equals(client.user)){
+		var reactions = messageReaction.message.reactions.array().map(element => {
+			return element.emoji.id;
+		});
+
+		var emojis = messageReaction.message.guild.emojis.array().filter(element => (
+			!reactions.includes(element.id)
+		)).map(element => {
+			return element.id;
+		});
+
+		const rem = emojis.length;
+		const max = messageReaction.message.guild.emojis.array().length;
+		const randomInt = Math.floor(Math.random() * max);
+		if(messageReaction.message.reactions.array().length >= 19 || randomInt > rem){
+			ignoredMessages.push(messageReaction.message.id);
+			messageReaction.message.channel.send(`~slam <@${user.id}>`);
+		} else {
+			messageReaction.message.react(messageReaction.message.guild.emojis.get(emojis[Math.floor(Math.random() * emojis.length)]));
 		}
 	}
 });
